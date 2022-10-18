@@ -112,6 +112,7 @@ Late for analysis, consider doing a log transform on wind speed and elevation si
 Where is the weather station with the highest elevation located?
 ```{r}
 library(leaflet)
+library(webshot)
 leaflet(elev) %>%
   addProviderTiles('OpenStreetMap') %>% 
   addCircles(lat=~lat,lng=~lon, opacity=1, fillOpacity=1, radius=100)
