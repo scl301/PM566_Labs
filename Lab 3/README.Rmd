@@ -2,7 +2,7 @@
 title: "Lab 3"
 author: "Stephanie Lee"
 date: "`r Sys.Date()`"
-output: github_document
+output: html_document
 always_allow_html: true
 ---
 
@@ -110,7 +110,7 @@ hist(met$wind.sp)
 Late for analysis, consider doing a log transform on wind speed and elevation since they are very skewed.
 
 Where is the weather station with the highest elevation located?
-```{r}
+```{r leaflet plot}
 library(leaflet)
 library(webshot)
 leaflet(elev) %>%
