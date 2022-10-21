@@ -1,0 +1,71 @@
+---
+title: "README"
+author: "Stephanie Lee"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(data.table)
+library(lubridate)
+```
+
+# 1. Read in data
+```{r read data}
+if (!file.exists("met_all.gz"))
+  download.file(
+    url = "https://raw.githubusercontent.com/USCbiostats/data-science-data/master/02_met/met_all.gz",
+    destfile = "met_all.gz",
+    method   = "libcurl",
+    timeout  = 60
+    )
+met <- data.table::fread("met_all.gz")
+```
+# 2. Prep Data
+
+Remove temps less than -17 and change elev 9999 to missing value.
+
+```{r remove vals}
+met <- met[temp > -17][elev == 9999.0, elev := NA]
+summary(met)
+```
+Generate a date variable:
+
+```{r date}
+met <- met[ , ymd := as.Date(paste(year, month, day, sep="-"))]
+```
+
+```{r week}
+met[, table(week(ymd))]
+```
+Keep observations of only first week of the month.
+```{r first week only}
+met_week1 <- met[week(ymd) == 31]
+```
+
+Compute variable means by station:
+```{r means}
+met_avg <- met_week1[, .(
+  temp      = max(temp,na.rm=T),
+  rh        = max(rh,na.rm=T), 
+  wind.sp   = max(wind.sp,na.rm=T), 
+  vis.dist  = max(vis.dist,na.rm=T), 
+  dew.point = max(dew.point,na.rm=T), 
+  lat       = max(lat,na.rm=T), 
+  lon       = max(lon,na.rm=T), 
+  elev      = max(elev,na.rm=T)
+), by = "USAFID"]
+```
+```{r}
+met_avg
+```
+
+```{r}
+met_avg[, region := fifelse(lon >= -98 & lat > 39.71, "NE",
+                    fifelse(lon < -98 & lat > 39.71, "NW",
+                    fifelse(lon < -98 & lat <= 39.71, "SW", "SE"                )))]
+table(met_avg$region)
+```
+
