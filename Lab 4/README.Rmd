@@ -2,7 +2,7 @@
 title: "README"
 author: "Stephanie Lee"
 date: "`r Sys.Date()`"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -21,7 +21,7 @@ if (!file.exists("met_all.gz"))
     method   = "libcurl",
     timeout  = 60
     )
-met <- data.table::fread("met_all.gz")
+met <- data.table::fread("../Lab 3/met_all.gz")
 ```
 # 2. Prep Data
 
@@ -65,7 +65,79 @@ met_avg
 ```{r}
 met_avg[, region := fifelse(lon >= -98 & lat > 39.71, "NE",
                     fifelse(lon < -98 & lat > 39.71, "NW",
-                    fifelse(lon < -98 & lat <= 39.71, "SW", "SE"                )))]
+                    fifelse(lon < -98 & lat <= 39.71, "SW", "SE")))]
 table(met_avg$region)
+```
+
+```{r}
+met_avg[, elev_cat := fifelse(elev > 252, "high", "low")]
+```
+
+
+# 3. Use geom_violin to examine the wind speed and dew point temp by region
+```{r dew violin plot}
+met_avg[!is.na(region)] %>%
+  ggplot() +
+  geom_violin(mapping = aes(y = dew.point, x = 1, color=region, fill = region)) +
+  facet_wrap(~ region, nrow=1)
+```
+```{r windspeed violin plot}
+met_avg[!is.na(region) & !is.na(wind.sp)] %>%
+  ggplot() +
+  geom_violin(mapping = aes(x=1, y=wind.sp, color=region, fill=region)) +
+  facet_wrap(~ region, nrow = 2)
+  
+```
+# 4. Use geom_point with geom_smooth to examine the association between dew point temp and wind speed
+
+Color points by region and make sure to deal w NA category.  Fit a linear regression line by region and describe graph observations.
+```{r dew windsp point graph}
+met_avg[!is.na(region) & !is.na(wind.sp)] %>% 
+  ggplot(mapping = aes(x = wind.sp, y = dew.point, color=region)) + 
+  geom_point(mapping = aes(color = region)) + 
+  geom_smooth(method = lm, mapping = aes(linetype = region)) +
+  facet_wrap(~ region, nrow = 2)
+```
+# 5. Create barplots of weather stations by elevation category colored by region
+```{r elev bar}
+met_avg[!is.na(elev)] %>%
+  ggplot()+
+  geom_bar(mapping = aes(x = elev_cat, fill=region))
+```
+
+
+# 6. Use stat_summary to examine mean dew point and wind speed by region with std dev error bars
+```{r dew windsp errorbar}
+met_avg[!is.na(dew.point)] %>%
+  ggplot(mapping = aes(x = region, y = dew.point)) + 
+  stat_summary(fun.data=mean_sdl, geom = 'errorbar') +
+  stat_summary(fun.data = mean_sdl, geom = "pointrange")
+```
+# 7. Generate a map of weather stations and show trend in relative humidity of top 10
+
+```{r color palette}
+library(leaflet)
+rh.pal <- colorNumeric(c('darkgreen','goldenrod','brown'), domain=met_avg$rh)
+rh.pal
+```
+```{r}
+top10rh <- met_avg[ rank(-rh) <= 10]
+```
+
+```{r}
+rhmap <- leaflet(met_avg) %>% 
+  # The looks of the Map
+  addProviderTiles('CartoDB.Positron') %>% 
+  # Some circles
+  addCircles(
+    lat = ~lat, lng=~lon,
+                                                  # HERE IS OUR PAL!
+    label = ~paste0(rh), color = ~ rh.pal(rh),
+    opacity = 1, fillOpacity = 1, radius = 500
+    ) %>%
+  # And a pretty legend
+  addLegend('bottomleft', pal=rh.pal, values=met_avg$rh,
+          title='Relative Humid.', opacity=1)
+rhmap
 ```
 
