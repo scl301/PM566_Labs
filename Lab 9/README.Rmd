@@ -53,3 +53,35 @@ microbenchmark::microbenchmark(
 ```
 We can see that generating the matrix `fun1alt` is way faster than generating by four numbers at a time `fun1()`
 
+\
+### Find the column max with `max.col()`
+
+```{r maxcol}
+# Data Generating Process
+set.seed(1234)
+M <- matrix(runif(12), ncol=4)
+
+# Find each column's max value
+fun2 <- function(x) {
+  apply(x, 2, max)
+}
+fun2(x=M)
+
+fun2alt <- function(x) {
+  idx <- max.col(t(x))
+  x[cbind(idx, 1:4)]
+}
+fun2alt(x=M)
+
+x <- matrix(rnorm(1e4), nrow=10)
+
+# Benchmarking
+microbenchmark::microbenchmark(
+  fun2(x),
+  fun2alt(x)
+)
+```
+We see that using `max.col()` is way faster than individually applying a max function.
+\
+
+
