@@ -45,9 +45,9 @@ microbenchmark::microbenchmark(
 ```
 
     ## Unit: microseconds
-    ##       expr   min    lq    mean median     uq     max neval
-    ##     fun1() 352.0 526.4 909.827 588.45 757.55 26928.3   100
-    ##  fun1alt()  21.5  25.1  61.477  28.30  35.25  2827.0   100
+    ##       expr   min     lq    mean median     uq     max neval
+    ##     fun1() 361.3 573.55 941.075 628.30 813.65 20719.6   100
+    ##  fun1alt()  21.7  24.65  70.264  28.55  36.20  3890.7   100
 
 We can see that generating the matrix `fun1alt` is way faster than
 generating by four numbers at a time `fun1()`
@@ -90,9 +90,9 @@ microbenchmark::microbenchmark(
 ```
 
     ## Unit: microseconds
-    ##        expr    min      lq     mean  median      uq    max neval
-    ##     fun2(x) 1266.7 1386.15 1810.626 1547.05 1944.65 4525.3   100
-    ##  fun2alt(x)  122.6  132.95  203.119  145.20  186.20 3615.6   100
+    ##        expr    min      lq     mean median      uq     max neval
+    ##     fun2(x) 1268.0 1377.55 1986.987 1623.6 2152.55  8722.8   100
+    ##  fun2alt(x)  122.7  136.80  368.777  180.9  235.00 17029.5   100
 
 We see that using `max.col()` is way faster than individually applying a
 max function.  
@@ -174,11 +174,11 @@ system.time(my_boot(dat = data.frame(x, y), my_stat, R = 4000, ncpus = 1L))
 ```
 
     ##    user  system elapsed 
-    ##    0.26    0.18    4.98
+    ##    0.29    0.14    4.51
 
 ``` r
 system.time(my_boot(dat = data.frame(x, y), my_stat, R = 4000, ncpus = 2L))
 ```
 
     ##    user  system elapsed 
-    ##    0.28    0.10    5.23
+    ##    0.29    0.14    4.69
