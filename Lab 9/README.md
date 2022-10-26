@@ -45,9 +45,9 @@ microbenchmark::microbenchmark(
 ```
 
     ## Unit: microseconds
-    ##       expr   min     lq    mean median     uq     max neval
-    ##     fun1() 350.6 542.10 901.820 589.95 741.00 20414.2   100
-    ##  fun1alt()  21.2  24.45  57.067  27.40  33.75  2567.6   100
+    ##       expr   min    lq    mean median     uq     max neval
+    ##     fun1() 352.0 526.4 909.827 588.45 757.55 26928.3   100
+    ##  fun1alt()  21.5  25.1  61.477  28.30  35.25  2827.0   100
 
 We can see that generating the matrix `fun1alt` is way faster than
 generating by four numbers at a time `fun1()`
@@ -90,9 +90,95 @@ microbenchmark::microbenchmark(
 ```
 
     ## Unit: microseconds
-    ##        expr    min     lq     mean  median     uq    max neval
-    ##     fun2(x) 1286.4 1370.3 1879.231 1641.40 2121.5 5340.6   100
-    ##  fun2alt(x)  124.4  140.2  233.720  179.65  222.2 3192.9   100
+    ##        expr    min      lq     mean  median      uq    max neval
+    ##     fun2(x) 1266.7 1386.15 1810.626 1547.05 1944.65 4525.3   100
+    ##  fun2alt(x)  122.6  132.95  203.119  145.20  186.20 3615.6   100
 
 We see that using `max.col()` is way faster than individually applying a
 max function.  
+
+# Problem 3: Parallelize everything
+
+Resampling from the data set with bootstrapping (resampling with
+replacement)  
+This is the setup for the bootstrapping function:
+
+``` r
+my_boot <- function(dat, stat, R, ncpus = 1L) {
+  
+  # Getting the random indices
+  n <- nrow(dat)
+  idx <- matrix(sample.int(n, n*R, TRUE), nrow=n, ncol=R)
+ 
+  # Making the cluster using `ncpus`
+  
+  # STEP 1: 
+  cl <- makePSOCKcluster(4)
+  clusterSetRNGStream(cl, 123) # same as 'set.seed(123)'
+  
+  # STEP 2:
+  clusterExport(cl, c("stat", "dat", "idx"), envir = environment())
+  
+  # STEP 3: THIS FUNCTION NEEDS TO BE REPLACED WITH parLapply
+  ans <- parLapply(cl,seq_len(R), function(i) {
+    stat(dat[idx[,i], , drop=FALSE])
+  })
+  
+  # Coercing the list into a matrix
+  ans <- do.call(rbind, ans)
+  
+  # STEP 4: GOES HERE
+  
+  ans
+  
+}
+```
+
+  
+\### 1. Use the bootstrapping code to make it work in parallel
+
+``` r
+# Bootstrap of an OLS
+my_stat <- function(d) coef(lm(y ~ x, data=d))
+
+# DATA SIM
+set.seed(1)
+n <- 500; R <- 1e4
+
+x <- cbind(rnorm(n)); y <- x*5 + rnorm(n)
+
+# Checking if we get something similar as lm
+ans0 <- confint(lm(y~x))
+ans1 <- my_boot(dat = data.frame(x, y), my_stat, R = R, ncpus = 2L)
+
+# You should get something like this
+t(apply(ans1, 2, quantile, c(.025,.975)))
+```
+
+    ##                   2.5%      97.5%
+    ## (Intercept) -0.1386903 0.04856752
+    ## x            4.8685162 5.04351239
+
+``` r
+ans0
+```
+
+    ##                  2.5 %     97.5 %
+    ## (Intercept) -0.1379033 0.04797344
+    ## x            4.8650100 5.04883353
+
+### 2. Check whether this version is faster than the non-parallel version:
+
+``` r
+system.time(my_boot(dat = data.frame(x, y), my_stat, R = 4000, ncpus = 1L))
+```
+
+    ##    user  system elapsed 
+    ##    0.26    0.18    4.98
+
+``` r
+system.time(my_boot(dat = data.frame(x, y), my_stat, R = 4000, ncpus = 2L))
+```
+
+    ##    user  system elapsed 
+    ##    0.28    0.10    5.23
