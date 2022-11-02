@@ -59,11 +59,110 @@ Write a query against the `rental` table that returns the IDs of the customers w
 PRAGMA table_info(rental)
 ```
 ```{sql connection=con}
-SELECT DISTINCT rental_id
+SELECT DISTINCT customer_id, rental_date
 FROM rental
 WHERE date(rental.rental_date) = '2005-07-05'
 ```
 
+# Exercise 4
+```{sql connection=con}
+PRAGMA table_info(payment)
+```
+
+## Exercise 4.1
+
+Construct a query that retrives all rows from the payment table where the amount is either 1.99, 7.99, 9.99.
+
+```{sql connection=con}
+SELECT *
+FROM payment
+WHERE amount IN (1.99, 7.99, 9.99)
+```
+
+## Exercise 4.2
+
+Construct a query that retrives all rows from the payment table where the amount is greater then 5
+
+```{sql connection=con}
+SELECT *
+FROM payment
+WHERE amount > 5
+```
+
+## Exercise 4.3
+
+Construct a query that retrives all rows from the payment table where the amount is greater then 5 and less then 8
+
+```{sql connection=con}
+SELECT *
+FROM payment
+WHERE amount > 5 AND amount < 8
+```
+
+# Exercise 5
+
+Retrive all the payment IDs and their amount from the customers whose last name is ‘DAVIS’.
+
+```{sql connection=con}
+PRAGMA table_info(customer)
+```
+
+```{sql connection=con}
+SELECT c.customer_id, p.payment_id, p.amount
+FROM customer AS c INNER JOIN payment AS P
+  ON c.customer_id = p.customer_id
+WHERE c.last_name IN ('DAVIS')
+```
+
+# Exercise 6
+
+## Exercise 6.1
+
+Use COUNT(*) to count the number of rows in rental
+
+```{r}
+dbGetQuery(con, "
+SELECT COUNT(*) AS count
+FROM rental
+")
+```
+```{sql connection=con}
+SELECT COUNT(*) AS count
+FROM rental
+```
+
+## Exercise 6.2
+
+Use COUNT(*) and GROUP BY to count the number of rentals for each customer_id
+
+```{sql connection=con}
+SELECT customer_id, COUNT(*) AS count
+FROM rental
+GROUP BY customer_id
+```
+
+## Exercise 6.3
+
+Repeat the previous query and sort by the count in descending order
+
+```{sql connection=con}
+SELECT customer_id, COUNT(*) AS count
+FROM rental
+GROUP BY customer_id
+ORDER BY count DESC
+```
+
+## Exercise 6.4
+
+Repeat the previous query but use HAVING to only keep the groups with 40 or more.
+
+```{sql connection=con}
+SELECT customer_id, COUNT(*) AS count
+FROM rental
+GROUP BY customer_id
+HAVING count >= 40
+ORDER BY count DESC
+```
 
 # Cleanup
 Run the following chunk to disconnect from the connection.

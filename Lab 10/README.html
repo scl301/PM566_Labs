@@ -648,7 +648,7 @@ ID.</p>
 </tbody>
 </table>
 </div>
-<pre class="sql"><code>SELECT DISTINCT rental_id
+<pre class="sql"><code>SELECT DISTINCT customer_id, rental_date
 FROM rental
 WHERE date(rental.rental_date) = &#39;2005-07-05&#39;</code></pre>
 <div class="knitsql-table">
@@ -656,42 +656,801 @@ WHERE date(rental.rental_date) = &#39;2005-07-05&#39;</code></pre>
 <caption>Displaying records 1 - 10</caption>
 <thead>
 <tr class="header">
-<th align="left">rental_id</th>
+<th align="right">customer_id</th>
+<th align="left">rental_date</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">3470</td>
+<td align="right">565</td>
+<td align="left">2005-07-05 22:49:24</td>
 </tr>
 <tr class="even">
-<td align="left">3471</td>
+<td align="right">242</td>
+<td align="left">2005-07-05 22:51:44</td>
 </tr>
 <tr class="odd">
-<td align="left">3472</td>
+<td align="right">37</td>
+<td align="left">2005-07-05 22:56:33</td>
 </tr>
 <tr class="even">
-<td align="left">3473</td>
+<td align="right">60</td>
+<td align="left">2005-07-05 22:57:34</td>
 </tr>
 <tr class="odd">
-<td align="left">3474</td>
+<td align="right">594</td>
+<td align="left">2005-07-05 22:59:53</td>
 </tr>
 <tr class="even">
-<td align="left">3475</td>
+<td align="right">8</td>
+<td align="left">2005-07-05 23:01:21</td>
 </tr>
 <tr class="odd">
-<td align="left">3476</td>
+<td align="right">490</td>
+<td align="left">2005-07-05 23:02:37</td>
 </tr>
 <tr class="even">
-<td align="left">3477</td>
+<td align="right">476</td>
+<td align="left">2005-07-05 23:05:17</td>
 </tr>
 <tr class="odd">
-<td align="left">3478</td>
+<td align="right">322</td>
+<td align="left">2005-07-05 23:05:44</td>
 </tr>
 <tr class="even">
-<td align="left">3479</td>
+<td align="right">298</td>
+<td align="left">2005-07-05 23:08:53</td>
 </tr>
 </tbody>
 </table>
+</div>
+</div>
+<div id="exercise-4" class="section level1">
+<h1>Exercise 4</h1>
+<pre class="sql"><code>PRAGMA table_info(payment)</code></pre>
+<div class="knitsql-table">
+<table>
+<caption>6 records</caption>
+<thead>
+<tr class="header">
+<th align="left">cid</th>
+<th align="left">name</th>
+<th align="left">type</th>
+<th align="right">notnull</th>
+<th align="left">dflt_value</th>
+<th align="right">pk</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">0</td>
+<td align="left">payment_id</td>
+<td align="left">INTEGER</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">customer_id</td>
+<td align="left">INTEGER</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">staff_id</td>
+<td align="left">INTEGER</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">3</td>
+<td align="left">rental_id</td>
+<td align="left">INTEGER</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">4</td>
+<td align="left">amount</td>
+<td align="left">REAL</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">5</td>
+<td align="left">payment_date</td>
+<td align="left">TEXT</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="exercise-4.1" class="section level2">
+<h2>Exercise 4.1</h2>
+<p>Construct a query that retrives all rows from the payment table where
+the amount is either 1.99, 7.99, 9.99.</p>
+<pre class="sql"><code>SELECT *
+FROM payment
+WHERE amount IN (1.99, 7.99, 9.99)</code></pre>
+<div class="knitsql-table">
+<table style="width:100%;">
+<caption>Displaying records 1 - 10</caption>
+<colgroup>
+<col width="14%" />
+<col width="15%" />
+<col width="11%" />
+<col width="13%" />
+<col width="9%" />
+<col width="35%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">payment_id</th>
+<th align="right">customer_id</th>
+<th align="right">staff_id</th>
+<th align="right">rental_id</th>
+<th align="right">amount</th>
+<th align="left">payment_date</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">16050</td>
+<td align="right">269</td>
+<td align="right">2</td>
+<td align="right">7</td>
+<td align="right">1.99</td>
+<td align="left">2007-01-24 21:40:19.996577</td>
+</tr>
+<tr class="even">
+<td align="right">16056</td>
+<td align="right">270</td>
+<td align="right">1</td>
+<td align="right">193</td>
+<td align="right">1.99</td>
+<td align="left">2007-01-26 05:10:14.996577</td>
+</tr>
+<tr class="odd">
+<td align="right">16081</td>
+<td align="right">282</td>
+<td align="right">2</td>
+<td align="right">48</td>
+<td align="right">1.99</td>
+<td align="left">2007-01-25 04:49:12.996577</td>
+</tr>
+<tr class="even">
+<td align="right">16103</td>
+<td align="right">294</td>
+<td align="right">1</td>
+<td align="right">595</td>
+<td align="right">1.99</td>
+<td align="left">2007-01-28 12:28:20.996577</td>
+</tr>
+<tr class="odd">
+<td align="right">16133</td>
+<td align="right">307</td>
+<td align="right">1</td>
+<td align="right">614</td>
+<td align="right">1.99</td>
+<td align="left">2007-01-28 14:01:54.996577</td>
+</tr>
+<tr class="even">
+<td align="right">16158</td>
+<td align="right">316</td>
+<td align="right">1</td>
+<td align="right">1065</td>
+<td align="right">1.99</td>
+<td align="left">2007-01-31 07:23:22.996577</td>
+</tr>
+<tr class="odd">
+<td align="right">16160</td>
+<td align="right">318</td>
+<td align="right">1</td>
+<td align="right">224</td>
+<td align="right">9.99</td>
+<td align="left">2007-01-26 08:46:53.996577</td>
+</tr>
+<tr class="even">
+<td align="right">16161</td>
+<td align="right">319</td>
+<td align="right">1</td>
+<td align="right">15</td>
+<td align="right">9.99</td>
+<td align="left">2007-01-24 23:07:48.996577</td>
+</tr>
+<tr class="odd">
+<td align="right">16180</td>
+<td align="right">330</td>
+<td align="right">2</td>
+<td align="right">967</td>
+<td align="right">7.99</td>
+<td align="left">2007-01-30 17:40:32.996577</td>
+</tr>
+<tr class="even">
+<td align="right">16206</td>
+<td align="right">351</td>
+<td align="right">1</td>
+<td align="right">1137</td>
+<td align="right">1.99</td>
+<td align="left">2007-01-31 17:48:40.996577</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="exercise-4.2" class="section level2">
+<h2>Exercise 4.2</h2>
+<p>Construct a query that retrives all rows from the payment table where
+the amount is greater then 5</p>
+<pre class="sql"><code>SELECT *
+FROM payment
+WHERE amount &gt; 5</code></pre>
+<div class="knitsql-table">
+<table style="width:100%;">
+<caption>Displaying records 1 - 10</caption>
+<colgroup>
+<col width="14%" />
+<col width="15%" />
+<col width="11%" />
+<col width="13%" />
+<col width="9%" />
+<col width="35%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">payment_id</th>
+<th align="right">customer_id</th>
+<th align="right">staff_id</th>
+<th align="right">rental_id</th>
+<th align="right">amount</th>
+<th align="left">payment_date</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">16052</td>
+<td align="right">269</td>
+<td align="right">2</td>
+<td align="right">678</td>
+<td align="right">6.99</td>
+<td align="left">2007-01-28 21:44:14.996577</td>
+</tr>
+<tr class="even">
+<td align="right">16058</td>
+<td align="right">271</td>
+<td align="right">1</td>
+<td align="right">1096</td>
+<td align="right">8.99</td>
+<td align="left">2007-01-31 11:59:15.996577</td>
+</tr>
+<tr class="odd">
+<td align="right">16060</td>
+<td align="right">272</td>
+<td align="right">1</td>
+<td align="right">405</td>
+<td align="right">6.99</td>
+<td align="left">2007-01-27 12:01:05.996577</td>
+</tr>
+<tr class="even">
+<td align="right">16061</td>
+<td align="right">272</td>
+<td align="right">1</td>
+<td align="right">1041</td>
+<td align="right">6.99</td>
+<td align="left">2007-01-31 04:14:49.996577</td>
+</tr>
+<tr class="odd">
+<td align="right">16068</td>
+<td align="right">274</td>
+<td align="right">1</td>
+<td align="right">394</td>
+<td align="right">5.99</td>
+<td align="left">2007-01-27 09:54:37.996577</td>
+</tr>
+<tr class="even">
+<td align="right">16073</td>
+<td align="right">276</td>
+<td align="right">1</td>
+<td align="right">860</td>
+<td align="right">10.99</td>
+<td align="left">2007-01-30 01:13:42.996577</td>
+</tr>
+<tr class="odd">
+<td align="right">16074</td>
+<td align="right">277</td>
+<td align="right">2</td>
+<td align="right">308</td>
+<td align="right">6.99</td>
+<td align="left">2007-01-26 20:30:05.996577</td>
+</tr>
+<tr class="even">
+<td align="right">16082</td>
+<td align="right">282</td>
+<td align="right">2</td>
+<td align="right">282</td>
+<td align="right">6.99</td>
+<td align="left">2007-01-26 17:24:52.996577</td>
+</tr>
+<tr class="odd">
+<td align="right">16086</td>
+<td align="right">284</td>
+<td align="right">1</td>
+<td align="right">1145</td>
+<td align="right">6.99</td>
+<td align="left">2007-01-31 18:42:11.996577</td>
+</tr>
+<tr class="even">
+<td align="right">16087</td>
+<td align="right">286</td>
+<td align="right">2</td>
+<td align="right">81</td>
+<td align="right">6.99</td>
+<td align="left">2007-01-25 10:43:45.996577</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="exercise-4.3" class="section level2">
+<h2>Exercise 4.3</h2>
+<p>Construct a query that retrives all rows from the payment table where
+the amount is greater then 5 and less then 8</p>
+<pre class="sql"><code>SELECT *
+FROM payment
+WHERE amount &gt; 5 AND amount &lt; 8</code></pre>
+<div class="knitsql-table">
+<table style="width:100%;">
+<caption>Displaying records 1 - 10</caption>
+<colgroup>
+<col width="14%" />
+<col width="15%" />
+<col width="11%" />
+<col width="13%" />
+<col width="9%" />
+<col width="35%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">payment_id</th>
+<th align="right">customer_id</th>
+<th align="right">staff_id</th>
+<th align="right">rental_id</th>
+<th align="right">amount</th>
+<th align="left">payment_date</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">16052</td>
+<td align="right">269</td>
+<td align="right">2</td>
+<td align="right">678</td>
+<td align="right">6.99</td>
+<td align="left">2007-01-28 21:44:14.996577</td>
+</tr>
+<tr class="even">
+<td align="right">16060</td>
+<td align="right">272</td>
+<td align="right">1</td>
+<td align="right">405</td>
+<td align="right">6.99</td>
+<td align="left">2007-01-27 12:01:05.996577</td>
+</tr>
+<tr class="odd">
+<td align="right">16061</td>
+<td align="right">272</td>
+<td align="right">1</td>
+<td align="right">1041</td>
+<td align="right">6.99</td>
+<td align="left">2007-01-31 04:14:49.996577</td>
+</tr>
+<tr class="even">
+<td align="right">16068</td>
+<td align="right">274</td>
+<td align="right">1</td>
+<td align="right">394</td>
+<td align="right">5.99</td>
+<td align="left">2007-01-27 09:54:37.996577</td>
+</tr>
+<tr class="odd">
+<td align="right">16074</td>
+<td align="right">277</td>
+<td align="right">2</td>
+<td align="right">308</td>
+<td align="right">6.99</td>
+<td align="left">2007-01-26 20:30:05.996577</td>
+</tr>
+<tr class="even">
+<td align="right">16082</td>
+<td align="right">282</td>
+<td align="right">2</td>
+<td align="right">282</td>
+<td align="right">6.99</td>
+<td align="left">2007-01-26 17:24:52.996577</td>
+</tr>
+<tr class="odd">
+<td align="right">16086</td>
+<td align="right">284</td>
+<td align="right">1</td>
+<td align="right">1145</td>
+<td align="right">6.99</td>
+<td align="left">2007-01-31 18:42:11.996577</td>
+</tr>
+<tr class="even">
+<td align="right">16087</td>
+<td align="right">286</td>
+<td align="right">2</td>
+<td align="right">81</td>
+<td align="right">6.99</td>
+<td align="left">2007-01-25 10:43:45.996577</td>
+</tr>
+<tr class="odd">
+<td align="right">16092</td>
+<td align="right">288</td>
+<td align="right">2</td>
+<td align="right">427</td>
+<td align="right">6.99</td>
+<td align="left">2007-01-27 14:38:30.996577</td>
+</tr>
+<tr class="even">
+<td align="right">16094</td>
+<td align="right">288</td>
+<td align="right">2</td>
+<td align="right">565</td>
+<td align="right">5.99</td>
+<td align="left">2007-01-28 07:54:57.996577</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="exercise-5" class="section level1">
+<h1>Exercise 5</h1>
+<p>Retrive all the payment IDs and their amount from the customers whose
+last name is ‘DAVIS’.</p>
+<pre class="sql"><code>PRAGMA table_info(customer)</code></pre>
+<div class="knitsql-table">
+<table>
+<caption>Displaying records 1 - 10</caption>
+<thead>
+<tr class="header">
+<th align="left">cid</th>
+<th align="left">name</th>
+<th align="left">type</th>
+<th align="right">notnull</th>
+<th align="left">dflt_value</th>
+<th align="right">pk</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">0</td>
+<td align="left">customer_id</td>
+<td align="left">INTEGER</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">store_id</td>
+<td align="left">INTEGER</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">first_name</td>
+<td align="left">TEXT</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">3</td>
+<td align="left">last_name</td>
+<td align="left">TEXT</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">4</td>
+<td align="left">email</td>
+<td align="left">TEXT</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">5</td>
+<td align="left">address_id</td>
+<td align="left">INTEGER</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">6</td>
+<td align="left">activebool</td>
+<td align="left">TEXT</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">7</td>
+<td align="left">create_date</td>
+<td align="left">TEXT</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">8</td>
+<td align="left">last_update</td>
+<td align="left">TEXT</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">9</td>
+<td align="left">active</td>
+<td align="left">INTEGER</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="sql"><code>SELECT c.customer_id, p.payment_id, p.amount
+FROM customer AS c INNER JOIN payment AS P
+  ON c.customer_id = p.customer_id
+WHERE c.last_name IN (&#39;DAVIS&#39;)</code></pre>
+<div class="knitsql-table">
+<table>
+<caption>3 records</caption>
+<thead>
+<tr class="header">
+<th align="right">customer_id</th>
+<th align="right">payment_id</th>
+<th align="right">amount</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">6</td>
+<td align="right">16685</td>
+<td align="right">4.99</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">16686</td>
+<td align="right">2.99</td>
+</tr>
+<tr class="odd">
+<td align="right">6</td>
+<td align="right">16687</td>
+<td align="right">0.99</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="exercise-6" class="section level1">
+<h1>Exercise 6</h1>
+<div id="exercise-6.1" class="section level2">
+<h2>Exercise 6.1</h2>
+<p>Use COUNT(*) to count the number of rows in rental</p>
+<pre class="r"><code>dbGetQuery(con, &quot;
+SELECT COUNT(*) AS count
+FROM rental
+&quot;)</code></pre>
+<pre><code>##   count
+## 1 16044</code></pre>
+<pre class="sql"><code>SELECT COUNT(*) AS count
+FROM rental</code></pre>
+<div class="knitsql-table">
+<table>
+<caption>1 records</caption>
+<thead>
+<tr class="header">
+<th align="right">count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">16044</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="exercise-6.2" class="section level2">
+<h2>Exercise 6.2</h2>
+<p>Use COUNT(*) and GROUP BY to count the number of rentals for each
+customer_id</p>
+<pre class="sql"><code>SELECT customer_id, COUNT(*) AS count
+FROM rental
+GROUP BY customer_id</code></pre>
+<div class="knitsql-table">
+<table>
+<caption>Displaying records 1 - 10</caption>
+<thead>
+<tr class="header">
+<th align="left">customer_id</th>
+<th align="right">count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="right">32</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="right">27</td>
+</tr>
+<tr class="odd">
+<td align="left">3</td>
+<td align="right">26</td>
+</tr>
+<tr class="even">
+<td align="left">4</td>
+<td align="right">22</td>
+</tr>
+<tr class="odd">
+<td align="left">5</td>
+<td align="right">38</td>
+</tr>
+<tr class="even">
+<td align="left">6</td>
+<td align="right">28</td>
+</tr>
+<tr class="odd">
+<td align="left">7</td>
+<td align="right">33</td>
+</tr>
+<tr class="even">
+<td align="left">8</td>
+<td align="right">24</td>
+</tr>
+<tr class="odd">
+<td align="left">9</td>
+<td align="right">23</td>
+</tr>
+<tr class="even">
+<td align="left">10</td>
+<td align="right">25</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="exercise-6.3" class="section level2">
+<h2>Exercise 6.3</h2>
+<p>Repeat the previous query and sort by the count in descending
+order</p>
+<pre class="sql"><code>SELECT customer_id, COUNT(*) AS count
+FROM rental
+GROUP BY customer_id
+ORDER BY count DESC</code></pre>
+<div class="knitsql-table">
+<table>
+<caption>Displaying records 1 - 10</caption>
+<thead>
+<tr class="header">
+<th align="right">customer_id</th>
+<th align="right">count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">148</td>
+<td align="right">46</td>
+</tr>
+<tr class="even">
+<td align="right">526</td>
+<td align="right">45</td>
+</tr>
+<tr class="odd">
+<td align="right">236</td>
+<td align="right">42</td>
+</tr>
+<tr class="even">
+<td align="right">144</td>
+<td align="right">42</td>
+</tr>
+<tr class="odd">
+<td align="right">75</td>
+<td align="right">41</td>
+</tr>
+<tr class="even">
+<td align="right">469</td>
+<td align="right">40</td>
+</tr>
+<tr class="odd">
+<td align="right">197</td>
+<td align="right">40</td>
+</tr>
+<tr class="even">
+<td align="right">468</td>
+<td align="right">39</td>
+</tr>
+<tr class="odd">
+<td align="right">178</td>
+<td align="right">39</td>
+</tr>
+<tr class="even">
+<td align="right">137</td>
+<td align="right">39</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="exercise-6.4" class="section level2">
+<h2>Exercise 6.4</h2>
+<p>Repeat the previous query but use HAVING to only keep the groups with
+40 or more.</p>
+<pre class="sql"><code>SELECT customer_id, COUNT(*) AS count
+FROM rental
+GROUP BY customer_id
+HAVING count &gt;= 40
+ORDER BY count DESC</code></pre>
+<div class="knitsql-table">
+<table>
+<caption>7 records</caption>
+<thead>
+<tr class="header">
+<th align="right">customer_id</th>
+<th align="right">count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">148</td>
+<td align="right">46</td>
+</tr>
+<tr class="even">
+<td align="right">526</td>
+<td align="right">45</td>
+</tr>
+<tr class="odd">
+<td align="right">236</td>
+<td align="right">42</td>
+</tr>
+<tr class="even">
+<td align="right">144</td>
+<td align="right">42</td>
+</tr>
+<tr class="odd">
+<td align="right">75</td>
+<td align="right">41</td>
+</tr>
+<tr class="even">
+<td align="right">469</td>
+<td align="right">40</td>
+</tr>
+<tr class="odd">
+<td align="right">197</td>
+<td align="right">40</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 <div id="cleanup" class="section level1">
