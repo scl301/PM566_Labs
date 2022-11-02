@@ -1453,6 +1453,218 @@ ORDER BY count DESC</code></pre>
 </div>
 </div>
 </div>
+<div id="exercise-7" class="section level1">
+<h1>Exercise 7</h1>
+<p>The following query calculates a number of summary statistics for the
+payment table using MAX, MIN, AVG and SUM</p>
+<div id="exercise-7.1" class="section level2">
+<h2>Exercise 7.1</h2>
+<p>Modify the above query to do those calculations for each
+customer_id</p>
+<pre class="sql"><code>SELECT customer_id,
+       MAX(amount) AS maxpayment,
+       MIN(amount) AS minpayment,
+       AVG(amount) AS avgpayment,
+       SUM(amount) AS sumpayment
+FROM payment
+GROUP BY customer_id</code></pre>
+<div class="knitsql-table">
+<table>
+<caption>Displaying records 1 - 10</caption>
+<thead>
+<tr class="header">
+<th align="right">customer_id</th>
+<th align="right">maxpayment</th>
+<th align="right">minpayment</th>
+<th align="right">avgpayment</th>
+<th align="right">sumpayment</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">2.99</td>
+<td align="right">0.99</td>
+<td align="right">1.990000</td>
+<td align="right">3.98</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">4.99</td>
+<td align="right">4.99</td>
+<td align="right">4.990000</td>
+<td align="right">4.99</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">2.99</td>
+<td align="right">1.99</td>
+<td align="right">2.490000</td>
+<td align="right">4.98</td>
+</tr>
+<tr class="even">
+<td align="right">5</td>
+<td align="right">6.99</td>
+<td align="right">0.99</td>
+<td align="right">3.323333</td>
+<td align="right">9.97</td>
+</tr>
+<tr class="odd">
+<td align="right">6</td>
+<td align="right">4.99</td>
+<td align="right">0.99</td>
+<td align="right">2.990000</td>
+<td align="right">8.97</td>
+</tr>
+<tr class="even">
+<td align="right">7</td>
+<td align="right">5.99</td>
+<td align="right">0.99</td>
+<td align="right">4.190000</td>
+<td align="right">20.95</td>
+</tr>
+<tr class="odd">
+<td align="right">8</td>
+<td align="right">6.99</td>
+<td align="right">6.99</td>
+<td align="right">6.990000</td>
+<td align="right">6.99</td>
+</tr>
+<tr class="even">
+<td align="right">9</td>
+<td align="right">4.99</td>
+<td align="right">0.99</td>
+<td align="right">3.656667</td>
+<td align="right">10.97</td>
+</tr>
+<tr class="odd">
+<td align="right">10</td>
+<td align="right">4.99</td>
+<td align="right">4.99</td>
+<td align="right">4.990000</td>
+<td align="right">4.99</td>
+</tr>
+<tr class="even">
+<td align="right">11</td>
+<td align="right">6.99</td>
+<td align="right">6.99</td>
+<td align="right">6.990000</td>
+<td align="right">6.99</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="exercise-7.2" class="section level2">
+<h2>Exercise 7.2</h2>
+<pre class="sql"><code>SELECT customer_id,
+       COUNT(*) N,
+       MAX(amount) AS maxpayment,
+       MIN(amount) AS minpayment,
+       AVG(amount) AS avgpayment,
+       SUM(amount) AS sumpayment
+FROM payment
+GROUP BY customer_id
+HAVING N &gt; 5</code></pre>
+<div class="knitsql-table">
+<table>
+<caption>Displaying records 1 - 10</caption>
+<thead>
+<tr class="header">
+<th align="right">customer_id</th>
+<th align="right">N</th>
+<th align="right">maxpayment</th>
+<th align="right">minpayment</th>
+<th align="right">avgpayment</th>
+<th align="right">sumpayment</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">19</td>
+<td align="right">6</td>
+<td align="right">9.99</td>
+<td align="right">0.99</td>
+<td align="right">4.490000</td>
+<td align="right">26.94</td>
+</tr>
+<tr class="even">
+<td align="right">53</td>
+<td align="right">6</td>
+<td align="right">9.99</td>
+<td align="right">0.99</td>
+<td align="right">4.490000</td>
+<td align="right">26.94</td>
+</tr>
+<tr class="odd">
+<td align="right">109</td>
+<td align="right">7</td>
+<td align="right">7.99</td>
+<td align="right">0.99</td>
+<td align="right">3.990000</td>
+<td align="right">27.93</td>
+</tr>
+<tr class="even">
+<td align="right">161</td>
+<td align="right">6</td>
+<td align="right">5.99</td>
+<td align="right">0.99</td>
+<td align="right">2.990000</td>
+<td align="right">17.94</td>
+</tr>
+<tr class="odd">
+<td align="right">197</td>
+<td align="right">8</td>
+<td align="right">3.99</td>
+<td align="right">0.99</td>
+<td align="right">2.615000</td>
+<td align="right">20.92</td>
+</tr>
+<tr class="even">
+<td align="right">207</td>
+<td align="right">6</td>
+<td align="right">6.99</td>
+<td align="right">0.99</td>
+<td align="right">2.990000</td>
+<td align="right">17.94</td>
+</tr>
+<tr class="odd">
+<td align="right">239</td>
+<td align="right">6</td>
+<td align="right">7.99</td>
+<td align="right">2.99</td>
+<td align="right">5.656667</td>
+<td align="right">33.94</td>
+</tr>
+<tr class="even">
+<td align="right">245</td>
+<td align="right">6</td>
+<td align="right">8.99</td>
+<td align="right">0.99</td>
+<td align="right">4.823333</td>
+<td align="right">28.94</td>
+</tr>
+<tr class="odd">
+<td align="right">251</td>
+<td align="right">6</td>
+<td align="right">4.99</td>
+<td align="right">1.99</td>
+<td align="right">3.323333</td>
+<td align="right">19.94</td>
+</tr>
+<tr class="even">
+<td align="right">269</td>
+<td align="right">6</td>
+<td align="right">6.99</td>
+<td align="right">0.99</td>
+<td align="right">3.156667</td>
+<td align="right">18.94</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 <div id="cleanup" class="section level1">
 <h1>Cleanup</h1>
 <p>Run the following chunk to disconnect from the connection.</p>
