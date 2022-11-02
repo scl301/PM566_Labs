@@ -42,6 +42,29 @@ FROM actor
 ORDER by last_name, first_name
 ```
 
+# Exercise 2
+Retrieve the actor ID, first name, and last name for actors whose last name equals ‘WILLIAMS’ or ‘DAVIS’.
+
+```{sql connection=con}
+SELECT actor_id, first_name, last_name
+FROM actor
+WHERE last_name IN ('WILLIAMS', 'DAVIS')
+```
+
+# Exercise 3
+
+Write a query against the `rental` table that returns the IDs of the customers who rented a film on July 5, 2005 (use the rental.rental_date column, and you can use the date() function to ignore the time component). Include a single row for each distinct customer ID.
+
+```{sql connection=con}
+PRAGMA table_info(rental)
+```
+```{sql connection=con}
+SELECT DISTINCT rental_id
+FROM rental
+WHERE date(rental.rental_date) = '2005-07-05'
+```
+
+
 # Cleanup
 Run the following chunk to disconnect from the connection.
 ```{r cleanup}

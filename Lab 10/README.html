@@ -515,6 +515,185 @@ ORDER by last_name, first_name</code></pre>
 </table>
 </div>
 </div>
+<div id="exercise-2" class="section level1">
+<h1>Exercise 2</h1>
+<p>Retrieve the actor ID, first name, and last name for actors whose
+last name equals ‘WILLIAMS’ or ‘DAVIS’.</p>
+<pre class="sql"><code>SELECT actor_id, first_name, last_name
+FROM actor
+WHERE last_name IN (&#39;WILLIAMS&#39;, &#39;DAVIS&#39;)</code></pre>
+<div class="knitsql-table">
+<table>
+<caption>6 records</caption>
+<thead>
+<tr class="header">
+<th align="right">actor_id</th>
+<th align="left">first_name</th>
+<th align="left">last_name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">4</td>
+<td align="left">JENNIFER</td>
+<td align="left">DAVIS</td>
+</tr>
+<tr class="even">
+<td align="right">72</td>
+<td align="left">SEAN</td>
+<td align="left">WILLIAMS</td>
+</tr>
+<tr class="odd">
+<td align="right">101</td>
+<td align="left">SUSAN</td>
+<td align="left">DAVIS</td>
+</tr>
+<tr class="even">
+<td align="right">110</td>
+<td align="left">SUSAN</td>
+<td align="left">DAVIS</td>
+</tr>
+<tr class="odd">
+<td align="right">137</td>
+<td align="left">MORGAN</td>
+<td align="left">WILLIAMS</td>
+</tr>
+<tr class="even">
+<td align="right">172</td>
+<td align="left">GROUCHO</td>
+<td align="left">WILLIAMS</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="exercise-3" class="section level1">
+<h1>Exercise 3</h1>
+<p>Write a query against the <code>rental</code> table that returns the
+IDs of the customers who rented a film on July 5, 2005 (use the
+rental.rental_date column, and you can use the date() function to ignore
+the time component). Include a single row for each distinct customer
+ID.</p>
+<pre class="sql"><code>PRAGMA table_info(rental)</code></pre>
+<div class="knitsql-table">
+<table>
+<caption>7 records</caption>
+<thead>
+<tr class="header">
+<th align="left">cid</th>
+<th align="left">name</th>
+<th align="left">type</th>
+<th align="right">notnull</th>
+<th align="left">dflt_value</th>
+<th align="right">pk</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">0</td>
+<td align="left">rental_id</td>
+<td align="left">INTEGER</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">rental_date</td>
+<td align="left">TEXT</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">inventory_id</td>
+<td align="left">INTEGER</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">3</td>
+<td align="left">customer_id</td>
+<td align="left">INTEGER</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">4</td>
+<td align="left">return_date</td>
+<td align="left">TEXT</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">5</td>
+<td align="left">staff_id</td>
+<td align="left">INTEGER</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">6</td>
+<td align="left">last_update</td>
+<td align="left">TEXT</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="sql"><code>SELECT DISTINCT rental_id
+FROM rental
+WHERE date(rental.rental_date) = &#39;2005-07-05&#39;</code></pre>
+<div class="knitsql-table">
+<table>
+<caption>Displaying records 1 - 10</caption>
+<thead>
+<tr class="header">
+<th align="left">rental_id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">3470</td>
+</tr>
+<tr class="even">
+<td align="left">3471</td>
+</tr>
+<tr class="odd">
+<td align="left">3472</td>
+</tr>
+<tr class="even">
+<td align="left">3473</td>
+</tr>
+<tr class="odd">
+<td align="left">3474</td>
+</tr>
+<tr class="even">
+<td align="left">3475</td>
+</tr>
+<tr class="odd">
+<td align="left">3476</td>
+</tr>
+<tr class="even">
+<td align="left">3477</td>
+</tr>
+<tr class="odd">
+<td align="left">3478</td>
+</tr>
+<tr class="even">
+<td align="left">3479</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <div id="cleanup" class="section level1">
 <h1>Cleanup</h1>
 <p>Run the following chunk to disconnect from the connection.</p>
