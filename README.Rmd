@@ -1,0 +1,29 @@
+---
+title: "Lab 7"
+author: "Stephanie Lee"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(httr)
+library(xml2)
+library(stringr)
+```
+
+## Question 1: How many sars-cov-2 papers?
+```{r website extraction}
+# Downloading the website
+website <- xml2::read_html("[URL]")
+
+# Finding the counts
+counts <- xml2::xml_find_first(website, "[XPath]")
+
+# Turning it into text
+counts <- as.character(counts)
+
+# Extracting the data using regex
+stringr::str_extract(counts, "[REGEX FOR NUMBERS WITH COMMAS/DOTS]")
+```
+
