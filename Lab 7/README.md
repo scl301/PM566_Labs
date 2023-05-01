@@ -20,9 +20,66 @@ counts <- xml2::xml_find_first(website, "/html/body/main/div[9]/div[2]/div[2]/di
 counts <- as.character(counts)
 
 # Extracting the data using regex
-stringr::str_extract(counts, "[0-9.,]+")
+stringr::str_extract(counts, "[0-9,]+")
 ```
 
     ## [1] "199,378"
 
 \##Question 2: Academic publications on COVID19 and Hawaii
+
+``` r
+library(httr)
+query_ids <- GET(
+  url   = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi",
+  query = list(db= "pubmed", term= "covid19 hawaii", retmax= 1000)
+)
+# Extracting the content of the response of GET
+ids <- httr::content(query_ids)
+```
+
+\##Question 3: Get details about the articles The Ids are wrapped around
+text in the following way: <Id>… id number …</Id>. we can use a regular
+expression that extract that information. Fill out the following lines
+of code:
+
+``` r
+# Turn the result into a character vector
+ids <- as.character(ids)
+
+# Find all the ids 
+ids <- stringr::str_extract_all(ids, "<Id>[[:digit:]]+</Id>")[[1]]
+
+# Remove all the leading and trailing <Id> </Id>. Make use of "|"
+ids <- stringr::str_remove_all(ids, "</?Id>")
+
+publications <- GET(
+  url   = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi",
+  query = list(
+    db = "pubmed",
+    id = paste(ids, collapse = ","),
+    retmax = 1000,
+    rettype = "abstract"
+    )
+)
+
+# Turning the output into character vector
+publications <- httr::content(publications)
+publications_txt <- as.character(publications)
+```
+
+## Question 4: Distribution of universities, schools, and departments
+
+``` r
+institution <- str_extract_all(
+  publications_txt,
+  "[YOUR REGULAR EXPRESSION HERE]"
+  ) 
+institution <- unlist(institution)
+table(institution)
+```
+
+    ## institution
+    ##               A       E       G       H       I       L       N       O       P 
+    ## 2050617  120404   15550   10486   29689  130449   45787   57925   14962   40495 
+    ##       R       S       U       X       Y 
+    ##   43388   44522   15736    1350   26610
