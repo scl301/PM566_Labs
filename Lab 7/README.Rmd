@@ -25,11 +25,19 @@ counts <- xml2::xml_find_first(website, "/html/body/main/div[9]/div[2]/div[2]/di
 counts <- as.character(counts)
 
 # Extracting the data using regex
-stringr::str_extract(counts, "[0-9.,]+")
+stringr::str_extract(counts, "[0-9,]+")
 ```
 ##Question 2: Academic publications on COVID19 and Hawaii
 
 ```{r query}
-
+library(httr)
+query_ids <- GET(
+  url   = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi",
+  query = list(db= "pubmed", term= "covid19 hawaii", retmax= 1000)
+)
+# Extracting the content of the response of GET
+ids <- httr::content(query_ids) %>% 
+  as.character(ids)
 ```
+
 
