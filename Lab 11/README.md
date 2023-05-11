@@ -20,6 +20,7 @@ cd lab11
 wget https://raw.githubusercontent.com/USCbiostats/PM566/master/website/content/assignment/11-lab.Rmd
 
 ```
+**View [HTML Report](https://rawcdn.githack.com/scl301/PM566_Labs/04fe0ecd5971614013142fedb5c4933f918840f6/Lab%2011/lab11.html)**
 
 **And remember to set `eval=TRUE`**
 
@@ -34,7 +35,7 @@ library(widgetframe)
 opts_chunk$set(
   warning = FALSE,
   message = FALSE,
-  eval=FALSE,
+  eval=TRUE,
   echo = TRUE,
   cache=FALSE,
   include=TRUE,
