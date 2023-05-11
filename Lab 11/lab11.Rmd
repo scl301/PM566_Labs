@@ -34,7 +34,7 @@ library(widgetframe)
 opts_chunk$set(
   warning = FALSE,
   message = FALSE,
-  eval=FALSE,
+  eval=TRUE,
   echo = TRUE,
   cache=FALSE,
   include=TRUE,
